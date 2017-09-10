@@ -1,4 +1,5 @@
 import csv
+from numpy import array
 
 def loadDataSet(filename):
     with open(filename, 'r') as file_o:
@@ -6,4 +7,4 @@ def loadDataSet(filename):
         rows = [row for row in file_r]
     features = rows[0] # features
     X = [row[1:] for row in rows[1:]] #instances
-    return (features, X)
+    return (array(features), array(X))
