@@ -1,4 +1,5 @@
 import csv
+import os
 from numpy import array
 
 def loadDataSet(filename):
@@ -8,3 +9,7 @@ def loadDataSet(filename):
     features = rows[0] # features
     X = [row[1:] for row in rows[1:]] #instances
     return (array(features), array(X))
+
+def loadClasses(dirname):
+    files = os.listdir(dirname)
+    return []
