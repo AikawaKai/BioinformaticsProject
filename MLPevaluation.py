@@ -10,6 +10,6 @@ if __name__ == '__main__':
     print(features)
     print(X)
     print("[INFO] Dataset loaded (Features, X).")
-    print("[INFO] Loading classes (Y).")
+    print("[INFO] Loading classes.")
     Y = loadClasses(annotations)
-    print("[INFO] Classes loaded.")
+    print("[INFO] Classes loaded (Y).")
