@@ -11,5 +11,7 @@ if __name__ == '__main__':
     print(X)
     print("[INFO] Dataset loaded (Features, X).")
     print("[INFO] Loading classes.")
-    Y = loadClasses(annotations)
+    (classes, Y) = loadClasses(annotations)
+    print(classes)
+    print(Y)
     print("[INFO] Classes loaded (Y).")

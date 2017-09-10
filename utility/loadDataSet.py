@@ -25,7 +25,5 @@ def loadClasses(dirname):
         rows = loadRowsFromCsv(dirname+"/"+file_)
         classes = rows[0]
         all_classes+=classes
-        print(len(all_classes))
         all_y+=transpose(rows)
-        print(len(all_y))
-    return(all_classes, all_y)
+    return(array(all_classes), array(all_y))
