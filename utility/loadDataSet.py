@@ -19,11 +19,13 @@ def loadDataSet(filename):
 
 def loadClasses(dirname):
     files = os.listdir(dirname)
-    all_classes = []
+    all_classes_name = []
     all_y = []
     for file_ in files:
         rows = loadRowsFromCsv(dirname+"/"+file_)
-        classes = rows[0]
-        all_classes+=classes
+        classes = rows[0][1:]
+        all_classes_name+=classes
+        rows = rows[1:]
+        rows = [row[1:] for row in rows]
         all_y+=transpose(rows)
-    return(array(all_classes), array(all_y))
+    return(array(all_classes_name), array(all_y))
