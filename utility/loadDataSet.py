@@ -15,6 +15,7 @@ def loadDataSet(filename):
     rows = loadRowsFromCsv(filename)
     features = rows[0] # features
     X = [row[1:] for row in rows[1:]] #instances
+    X = [[float(val) for val in row] for row in X]
     return (array(features), array(X))
 
 def loadClasses(dirname):
@@ -27,5 +28,7 @@ def loadClasses(dirname):
         all_classes_name+=classes
         rows = rows[1:]
         rows = [row[1:] for row in rows]
+        rows = [[int(val) for val in row] for row in rows]
         all_y+=transpose(rows)
-    return(array(all_classes_name), array(all_y))
+    print(len(all_y[0]))
+    return(array(all_classes_name), array(transpose(all_y)))
