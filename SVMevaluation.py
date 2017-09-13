@@ -44,5 +44,5 @@ if __name__ == '__main__':
 
     with open("./results/SVM_AUC_results.csv", "w") as f_i:
         csv_writer = csv.writer(f_i, delimiter=",")
-        csv_writer.writerow(["AUC"]+classes[:5])
+        csv_writer.writerow(["AUC"]+list(classes[:5]))
         csv_writer.writerow(res)
