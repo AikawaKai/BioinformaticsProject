@@ -60,10 +60,22 @@ if __name__ == '__main__':
         recall = 0
         for inst in counter_confusion_matrix:
             dict_ = Counter(inst)
-            tp = dict_["TP"]
-            tn = dict_["TN"]
-            fn = dict_["FN"]
-            fp = dict_["FP"]
+            try:
+                tp = dict_["TP"]
+            except:
+                tp = 0
+            try:
+                tn = dict_["TN"]
+            except:
+                tn = 0
+            try:
+                fn = dict_["FN"]
+            except:
+                fn = 0
+            try:
+                fp = dict_["FP"]
+            except:
+                fp = 0
             precision+=tp/(tp+fp)
             recall+=tp/(tp+fn)
         csv_writer.writerow([precision/len(counter_confusion_matrix), recall/len(counter_confusion_matrix)])
