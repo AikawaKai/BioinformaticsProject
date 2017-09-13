@@ -29,7 +29,7 @@ if __name__ == '__main__':
     kf = StratifiedKFold(n_splits=2)
     clf = svm.SVC(class_weight="balanced")
     res = []
-    for y in Y:
+    for y in Y[:5]:
         auc = 0
         for train_index, test_index in kf.split(X, y):
             X_train, X_test = X[train_index], X[test_index]
@@ -42,7 +42,7 @@ if __name__ == '__main__':
         print(cur_auc)
         auc_ = 0
 
-    with open("./results/SVMPresults.csv", "w") as f_i:
+    with open("./results/SVM_AUC_results.csv", "w") as f_i:
         csv_writer = csv.writer(f_i, delimiter=",")
-        csv_writer.writerow(classes)
+        csv_writer.writerow(["AUC"]+classes[:5])
         csv_writer.writerow(res)
