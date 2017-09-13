@@ -53,7 +53,7 @@ if __name__ == '__main__':
         csv_writer.writerow(["AUC"]+list(classes))
         csv_writer.writerow(res)
 
-    with open("./results/SVM_Precision_Recall_multilabel_results.csv") as f_i:
+    with open("./results/SVM_Precision_Recall_multilabel_results.csv", 'w') as f_i:
         csv_writer = csv.writer(f_i, delimiter=",")
         csv_writer.writerow(["Precision", "Recall"])
         precision = 0
