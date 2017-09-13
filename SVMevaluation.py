@@ -21,15 +21,15 @@ if __name__ == '__main__':
     print("[INFO] Dataset loaded (Features, X).")
     print("[INFO] Loading classes.")
     (classes, Y) = loadClasses(annotations)
-    # print(len(classes))
+    print(len(classes))
     # print(Y)
     print("[INFO] Classes loaded (Y).")
     print(len(Y[0]), len(features))
     print("[INFO] SVM Training Started.")
-    kf = StratifiedKFold(n_splits=2)
+    kf = StratifiedKFold(n_splits=5)
     clf = svm.SVC(class_weight="balanced")
     res = [""]
-    for y in Y[:5]:
+    for y in Y:
         auc = 0
         for train_index, test_index in kf.split(X, y):
             X_train, X_test = X[train_index], X[test_index]
@@ -37,12 +37,12 @@ if __name__ == '__main__':
             clf.fit(X_train, y_train)
             auc_i = my_scorer(clf, X_test, y_test)
             auc+=auc_i
-        cur_auc = auc/2
+        cur_auc = auc/5
         res.append(cur_auc)
         print(cur_auc)
         auc_ = 0
 
     with open("./results/SVM_AUC_results.csv", "w") as f_i:
         csv_writer = csv.writer(f_i, delimiter=",")
-        csv_writer.writerow(["AUC"]+list(classes[:5]))
+        csv_writer.writerow(["AUC"]+list(classes))
         csv_writer.writerow(res)
