@@ -23,4 +23,4 @@ if __name__ == '__main__':
     print("[INFO] MLP Training Started.")
     clf = MLPClassifier(hidden_layer_sizes=tuple([len(features) for i in range(2)]),
                         early_stopping=True)
-    OneVsRestClassifier(clf.fit(X, Y)).predict(X)
+    OneVsRestClassifier(clf).fit(X, Y).predict(X)

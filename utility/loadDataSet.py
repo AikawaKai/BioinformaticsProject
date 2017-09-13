@@ -31,4 +31,4 @@ def loadClasses(dirname):
         rows = [[int(val) for val in row] for row in rows]
         all_y+=transpose(rows)
     print(len(all_y[0]))
-    return(array(all_classes_name), array(transpose(all_y)))
+    return(array(all_classes_name), array(transpose(all_y[:2])))
