@@ -6,8 +6,6 @@ from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import precision_recall_curve
 from utility.scorer import *
-from imblearn.over_sampling import ADASYN
-from imblearn.combine import SMOTEENN
 import csv
 import sys
 from numpy import array
