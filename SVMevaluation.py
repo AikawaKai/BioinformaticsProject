@@ -1,8 +1,7 @@
 from utility.loadDataSet import loadDataSet
 from utility.loadDataSet import loadClasses
 from utility.loadDataSet import transpose
-from sklearn.neural_network import MLPClassifier
-from sklearn.multiclass import OneVsRestClassifier
+from sklearn import svm
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import StratifiedKFold
 from utility.scorer import *
@@ -33,8 +32,8 @@ if __name__ == '__main__':
     for y in Y:
         auc = 0
         for train_index, test_index in kf.split(X, y):
-            X_train, X_test = X_res[train_index], X_res[test_index]
-            y_train, y_test = y_res[train_index], y_res[test_index]
+            X_train, X_test = X[train_index], X[test_index]
+            y_train, y_test = y[train_index], y[test_index]
             clf.fit(X_train, y_train)
             auc_i = my_scorer(clf, X_test, y_test)
             auc+=auc_i

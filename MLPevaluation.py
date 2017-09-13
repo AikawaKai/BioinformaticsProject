@@ -2,7 +2,6 @@ from utility.loadDataSet import loadDataSet
 from utility.loadDataSet import loadClasses
 from utility.loadDataSet import transpose
 from sklearn.neural_network import MLPClassifier
-from sklearn.multiclass import OneVsRestClassifier
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import StratifiedKFold
 from utility.scorer import *
@@ -42,7 +41,7 @@ if __name__ == '__main__':
             clf.fit(X_train, y_train)
             auc_i = my_scorer(clf, X_test, y_test)
             auc+=auc_i
-        cur_auc = auc/5
+        cur_auc = auc/2
         res.append(cur_auc)
         print(cur_auc)
         auc_ = 0
