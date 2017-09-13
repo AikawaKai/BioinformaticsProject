@@ -28,7 +28,7 @@ if __name__ == '__main__':
     print("[INFO] SVM Training Started.")
     kf = StratifiedKFold(n_splits=2)
     clf = svm.SVC(class_weight="balanced")
-    res = []
+    res = [""]
     for y in Y[:5]:
         auc = 0
         for train_index, test_index in kf.split(X, y):
