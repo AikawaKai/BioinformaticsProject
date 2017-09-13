@@ -30,7 +30,7 @@ if __name__ == '__main__':
     clf = svm.SVC(class_weight="balanced")
     res = [""]
     counter_confusion_matrix = [[] for i in range(len(features))]
-    for y in Y[:50]:
+    for y in Y:
         auc = 0
         for train_index, test_index in kf.split(X, y):
             X_train, X_test = X[train_index], X[test_index]
@@ -78,5 +78,5 @@ if __name__ == '__main__':
                 fp = 0
             precision+=tp/(tp+fp)
             recall+=tp/(tp+fn)
-        csv_writer.writerow([precision/50, recall/50])
-        # csv_writer.writerow([precision/len(counter_confusion_matrix), recall/len(counter_confusion_matrix)])
+        #csv_writer.writerow([precision/50, recall/50])
+        csv_writer.writerow([precision/len(counter_confusion_matrix), recall/len(counter_confusion_matrix)])
