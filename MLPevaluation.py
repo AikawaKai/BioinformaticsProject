@@ -7,6 +7,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import StratifiedKFold
 from utility.scorer import *
 from imblearn.over_sampling import ADASYN
+from imblearn.combine import SMOTEENN
 import csv
 import sys
 from numpy import array
@@ -29,11 +30,11 @@ if __name__ == '__main__':
     clf = MLPClassifier(hidden_layer_sizes=tuple([100 for i in range(2)]),
                         early_stopping=True)
     results = []
-    ada = ADASYN(random_state=42)
-    kf = StratifiedKFold(n_splits=5)
+    sme = SMOTEENN(random_state=10)
+    kf = StratifiedKFold(n_splits=2)
     res = []
     for y in Y:
-        X_res, y_res = ada.fit_sample(X, y)
+        X_res, y_res = sme.fit_sample(X, y)
         auc = 0
         for train_index, test_index in kf.split(X_res, y_res):
             X_train, X_test = X_res[train_index], X_res[test_index]
