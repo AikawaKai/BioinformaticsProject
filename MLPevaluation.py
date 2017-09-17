@@ -70,7 +70,8 @@ if __name__ == '__main__':
         csv_writer.writerow(["Precision", "Recall"])
         precision = 0
         recall = 0
-        len_div = len(counter_confusion_matrix)
+        len_div1 = len(counter_confusion_matrix)
+        len_div2 = len_div1
         for inst in counter_confusion_matrix:
             dict_ = Counter(inst)
             try:
@@ -91,12 +92,15 @@ if __name__ == '__main__':
                 fp = 0
             try:
                 precision+=tp/(tp+fp)
+            except:
+                len_div1 = len_div1-1
+            try:
                 recall+=tp/(tp+fn)
             except:
-                len_div = len_div-1
+                len_div2 = len_div2-1
 
         #csv_writer.writerow([precision/50, recall/50])
-        if len_div>0:
-            csv_writer.writerow([precision/len_div, recall/len_div])
+        if len_div1>0:
+            csv_writer.writerow([precision/len_div1, recall/len_div2])
         else:
             csv_writer.writerow([0, 0])

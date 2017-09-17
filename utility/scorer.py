@@ -51,7 +51,7 @@ def getScores(estimator, x, y):
     #precision_recall_curve
     #auc_pr = auc(precision, recall, reorder=True)
     auc_pr = average_precision_score(y, yScores)
-    plotCurve(recall, precision, auc_pr, "precision", "recall")
+    # plotCurve(recall, precision, auc_pr, "precision", "recall")
     # print(thresholds)
     # print(classification_report(y, yPred))
     print(confusion_matrix(y, yPred))
