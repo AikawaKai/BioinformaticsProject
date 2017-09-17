@@ -4,7 +4,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, preci
 from collections import Counter
 import matplotlib.pyplot as plt
 
-def plotCurve(fpr, tpr, auc):
+def plotCurve(fpr, tpr, auc, labely, labelx):
     plt.figure()
     lw = 2
     plt.plot(fpr, tpr, color='darkorange',
@@ -12,8 +12,8 @@ def plotCurve(fpr, tpr, auc):
     plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
+    plt.xlabel(labelx)
+    plt.ylabel(labely)
     plt.title('Receiver operating characteristic example')
     plt.legend(loc="lower right")
     plt.show()
@@ -37,17 +37,21 @@ def getScores(estimator, x, y):
     yPred = estimator.predict(x)
     yScores = estimator.predict_proba(x)[:,1]
     fpr, tpr, thresholds = roc_curve(y, yScores, pos_label=1)
-    print(len(tpr), len(thresholds))
+    precision, recall, thresholds = precision_recall_curve(y, yScores, pos_label=1)
+    #print(list(zip(recall, precision, thresholds)))
+    # print(len(tpr), len(thresholds))
     #print(list(zip(tpr, fpr, thresholds)))
-    print(tpr)
-    print([recall_score(y, [1 if pred>=tr else 0 for pred in yScores]) for tr in thresholds])
-    yPred = [1 if pred>0.5 else 0 for pred in yScores ]
+    # print(tpr)
+    # print([recall_score(y, [1 if pred>=tr else 0 for pred in yScores]) for tr in thresholds])
+    # yPred = [1 if pred>=0.53 else 0 for pred in yScores ]
     auc_ro = auc(fpr, tpr)
     # plotCurve(fpr, tpr, auc_ro)
     #precision, recall, thresholds = precision_recall_curve(y, yScores, pos_label=1)
     # print(fpr, tpr)
     #precision_recall_curve
+    #auc_pr = auc(precision, recall, reorder=True)
     auc_pr = average_precision_score(y, yScores)
+    plotCurve(recall, precision, auc_pr, "precision", "recall")
     # print(thresholds)
     # print(classification_report(y, yPred))
     print(confusion_matrix(y, yPred))
