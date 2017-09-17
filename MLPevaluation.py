@@ -4,12 +4,14 @@ from utility.loadDataSet import transpose
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import StratifiedKFold
+from sklearn.metrics import precision_recall_curve
 from utility.scorer import *
-from imblearn.over_sampling import ADASYN
-from imblearn.combine import SMOTEENN
 import csv
 import sys
 from numpy import array
+from collections import Counter
+
+
 
 if __name__ == '__main__':
     print("[INFO] Loading dataset.")
@@ -21,32 +23,77 @@ if __name__ == '__main__':
     print("[INFO] Dataset loaded (Features, X).")
     print("[INFO] Loading classes.")
     (classes, Y) = loadClasses(annotations)
-    # print(classes)
+    print(len(classes))
     # print(Y)
     print("[INFO] Classes loaded (Y).")
     print(len(Y[0]), len(features))
     print("[INFO] MLP Training Started.")
-    clf = MLPClassifier(hidden_layer_sizes=tuple([100 for i in range(2)]),
+    kf = StratifiedKFold(n_splits=5)
+    clf = MLPClassifier(hidden_layer_sizes=(500, 500),
                         early_stopping=True)
-    results = []
-    sme = SMOTEENN(random_state=10)
-    kf = StratifiedKFold(n_splits=2)
-    res = []
-    for y in Y:
-        X_res, y_res = sme.fit_sample(X, y)
-        auc = 0
-        for train_index, test_index in kf.split(X_res, y_res):
-            X_train, X_test = X_res[train_index], X_res[test_index]
-            y_train, y_test = y_res[train_index], y_res[test_index]
+    res1 = ["ROC"]
+    res2 = ["PRC"]
+    counter_confusion_matrix = [[] for i in range(len(features))]
+    for y in Y[:2]:
+        auc1 = 0
+        auc2 = 0
+        for train_index, test_index in kf.split(X, y):
+            X_train, X_test = X[train_index], X[test_index]
+            y_train, y_test = y[train_index], y[test_index]
             clf.fit(X_train, y_train)
-            auc_i = my_scorer(clf, X_test, y_test)
-            auc+=auc_i
-        cur_auc = auc/2
-        res.append(cur_auc)
-        print(cur_auc)
-        auc_ = 0
+            auc_roc_i, auc_pr_i, diff_ = my_scorer(clf, X_test, y_test)
+            auc1+=auc_roc_i
+            auc2+=auc_pr_i
+            i=0
+            for index in test_index:
+                counter_confusion_matrix[index].append(diff_[i])
+                i+=1
+            # print(counter_confusion_matrix)
+        auc1 = auc1/5
+        auc2 = auc2/5
+        res1.append(auc1)
+        res2.append(auc2)
+        print(auc1)
+        print(auc2)
 
-    with open("./results/MLPresults.csv", "w") as f_i:
+    with open("./results/MLP_AUC_results.csv", "w") as f_i:
         csv_writer = csv.writer(f_i, delimiter=",")
-        csv_writer.writerow(classes)
-        csv_writer.writerow(res)
+        csv_writer.writerow(["AUC"]+list(classes))
+        csv_writer.writerow(res1)
+        csv_writer.writerow(res2)
+
+    with open("./results/MLP_Precision_Recall_multilabel_results.csv", 'w') as f_i:
+        csv_writer = csv.writer(f_i, delimiter=",")
+        csv_writer.writerow(["Precision", "Recall"])
+        precision = 0
+        recall = 0
+        len_div = len(counter_confusion_matrix)
+        for inst in counter_confusion_matrix:
+            dict_ = Counter(inst)
+            try:
+                tp = dict_["TP"]
+            except:
+                tp = 0
+            try:
+                tn = dict_["TN"]
+            except:
+                tn = 0
+            try:
+                fn = dict_["FN"]
+            except:
+                fn = 0
+            try:
+                fp = dict_["FP"]
+            except:
+                fp = 0
+            try:
+                precision+=tp/(tp+fp)
+                recall+=tp/(tp+fn)
+            except:
+                len_div = len_div-1
+
+        #csv_writer.writerow([precision/50, recall/50])
+        if len_div>0:
+            csv_writer.writerow([precision/len_div, recall/len_div])
+        else:
+            csv_writer.writerow([0, 0])

@@ -27,31 +27,37 @@ if __name__ == '__main__':
     print(len(Y[0]), len(features))
     print("[INFO] SVM Training Started.")
     kf = StratifiedKFold(n_splits=5)
-    clf = svm.SVC(class_weight="balanced")
-    res = [""]
+    clf = svm.SVC(class_weight="balanced", probability=True)
+    res1 = ["ROC"]
+    res2 = ["PRC"]
     counter_confusion_matrix = [[] for i in range(len(features))]
-    for y in Y:
-        auc = 0
+    for y in Y[:2]:
+        auc1 = 0
+        auc2 = 0
         for train_index, test_index in kf.split(X, y):
             X_train, X_test = X[train_index], X[test_index]
             y_train, y_test = y[train_index], y[test_index]
             clf.fit(X_train, y_train)
-            auc_i, diff_ = my_scorer(clf, X_test, y_test)
-            auc+=auc_i
+            auc_roc_i, auc_pr_i, diff_ = my_scorer(clf, X_test, y_test)
+            auc1+=auc_roc_i
+            auc2+=auc_pr_i
             i=0
             for index in test_index:
                 counter_confusion_matrix[index].append(diff_[i])
                 i+=1
             # print(counter_confusion_matrix)
-        cur_auc = auc/5
-        res.append(cur_auc)
-        print(cur_auc)
-        auc_ = 0
+        auc1 = auc1/5
+        auc2 = auc2/5
+        res1.append(auc1)
+        res2.append(auc2)
+        print(auc1)
+        print(auc2)
 
     with open("./results/SVM_AUC_results.csv", "w") as f_i:
         csv_writer = csv.writer(f_i, delimiter=",")
         csv_writer.writerow(["AUC"]+list(classes))
-        csv_writer.writerow(res)
+        csv_writer.writerow(res1)
+        csv_writer.writerow(res2)
 
     with open("./results/SVM_Precision_Recall_multilabel_results.csv", 'w') as f_i:
         csv_writer = csv.writer(f_i, delimiter=",")
