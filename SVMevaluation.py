@@ -31,7 +31,7 @@ if __name__ == '__main__':
     res1 = ["ROC"]
     res2 = ["PRC"]
     counter_confusion_matrix = [[] for i in range(len(features))]
-    for y in Y[:2]:
+    for y in Y:
         auc1 = 0
         auc2 = 0
         for train_index, test_index in kf.split(X, y):
