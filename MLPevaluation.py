@@ -4,6 +4,7 @@ from utility.loadDataSet import transpose
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import StratifiedKFold
+from imblearn.under_sampling import ClusterCentroids
 from sklearn.metrics import precision_recall_curve
 from utility.scorer import *
 import csv
@@ -40,6 +41,8 @@ if __name__ == '__main__':
         for train_index, test_index in kf.split(X, y):
             X_train, X_test = X[train_index], X[test_index]
             y_train, y_test = y[train_index], y[test_index]
+            cc = ClusterCentroids(random_state=0)
+            X_train, y_train = cc.fit_sample(X_train, y_train)
             clf.fit(X_train, y_train)
             auc_roc_i, auc_pr_i, diff_ = my_scorer(clf, X_test, y_test)
             auc1+=auc_roc_i

@@ -2,6 +2,21 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import auc, roc_curve, classification_report, average_precision_score
 from sklearn.metrics import accuracy_score, precision_score, recall_score, precision_recall_curve
 from collections import Counter
+import matplotlib.pyplot as plt
+
+def plotCurve(fpr, tpr, auc):
+    plt.figure()
+    lw = 2
+    plt.plot(fpr, tpr, color='darkorange',
+             lw=lw, label='ROC curve (area = %0.2f)' % auc)
+    plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('Receiver operating characteristic example')
+    plt.legend(loc="lower right")
+    plt.show()
 
 def checkPredict(c):
     res = ''
@@ -21,10 +36,14 @@ def checkPredict(c):
 def getScores(estimator, x, y):
     yPred = estimator.predict(x)
     yScores = estimator.predict_proba(x)[:,1]
-    print(yScores)
-    # print(yScores)
     fpr, tpr, thresholds = roc_curve(y, yScores, pos_label=1)
+    print(len(tpr), len(thresholds))
+    #print(list(zip(tpr, fpr, thresholds)))
+    print(tpr)
+    print([recall_score(y, [1 if pred>=tr else 0 for pred in yScores]) for tr in thresholds])
+    yPred = [1 if pred>0.5 else 0 for pred in yScores ]
     auc_ro = auc(fpr, tpr)
+    # plotCurve(fpr, tpr, auc_ro)
     #precision, recall, thresholds = precision_recall_curve(y, yScores, pos_label=1)
     # print(fpr, tpr)
     #precision_recall_curve
