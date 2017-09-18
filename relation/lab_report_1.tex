@@ -119,7 +119,10 @@ Dato il tempo limitato per l'esplorazione delle diverse configurazioni di ogni a
 Per ogni singolo problema di classificazione è stato addestrato un singolo classificatore, cercando di gestire lo sbilanciamento delle classi.
 
 \subsection{Set-up SVM}
-Per la support vector machine, come anticipato, è stato utilizzato il kernel RBF, e per la gestione delle classi sbilanciate si è fissato il parametro $class\_weight="auto"$, il quale permette di incrementare la penalità per le istanze delle classi sbilanciate, migliorando notevolmente le prestazioni dell'algoritmo su queste ultime.
+Per la support vector machine, come anticipato, è stato utilizzato il kernel RBF. Si tratta di una funzione kernel che può essere interpretata come similarità tra due istanze del problema (sfrutta la distanza euclidea) ed è regolata da un paramatro $\gamma$ , che nel nostro test è stato fissato a $\frac{1}{\#features}$.
+\newline
+\newline
+Per la gestione delle classi sbilanciate si è fissato il parametro $class\_weight$ dell'implementazione python di scikit-learn ad $"auto"$, il quale permette di modulare automaticamente la penalità per le istanze delle classi sbilanciate, proporzionalmente alla loro frequenza, migliorando notevolmente le prestazioni dell'algoritmo su queste ultime.
 
 \subsection{Set-up MLP}
 Per la rete neurale multilayer si è decisa una configurazione a due hidden layer da 500 nodi ciascuno.
@@ -135,7 +138,10 @@ La Relu è la funzione:
 ed è in genere utilizzata perché veloce per l'apprendimento (per la computazione del gradiente).
 \newline
 \newline
-Il solver Adam è invece un ottimizzatore stocastico per la discesa del gradiente\footnote{https://arxiv.org/abs/1412.6980}.
+Il solver Adam è invece un ottimizzatore stocastico per la discesa del gradiente\footnote{\url{https://arxiv.org/abs/1412.6980}}.
+\newline
+\newline
+Per la gestione del problema dello sbilanciamento delle classi, data l'impossibilità di modificare le penalità dall'implementazione python di scikit-learn, si è utilizzata una tecnica di \textit{under-sampling}, la quale consiste nel ridurre la numerosità del dataset sfruttando tecniche di \textit{clustering}, e cioè eliminando un insieme di punti, rappresentandoli unicamente con il rispettivo \textit{centroide}.
 \subsection{Metriche e valutazione}
 
 Per valutare le performance del metodo si è usata la tecnica sperimentale della 5-fold
@@ -147,17 +153,9 @@ curve (AUROC) and the Area Under the Precision Recall Curve (AUPRC);
 \item Misure per-example: la Precision, Recall ed F-score gerarchica.
 \end{itemize}
 
+\section{Risultati}
 
 
-%----------------------------------------------------------------------------------------
-%	BIBLIOGRAPHY
-%----------------------------------------------------------------------------------------
-
-\bibliographystyle{apalike}
-
-\bibliography{sample}
-
-%----------------------------------------------------------------------------------------
 
 
 \end{document}
