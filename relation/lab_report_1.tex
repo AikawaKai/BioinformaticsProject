@@ -42,7 +42,7 @@
 \title{Predizione della funzione delle proteine con
 metodi di Machine Learning} % Title
 
-\author{Marco Odore \\ Lorenzo Rossi} % Author name
+\author{Odore Marco \\ Rossi Lorenzo} % Author name
 
 \date{\today} % Date for the report
 
@@ -106,12 +106,37 @@ Si tratta di un algoritmo di apprendimento che performa bene su problemi linearm
 Data l'altissima probabilità dei diversi problemi di classificazione di essere non linearmente separabili, nel nostro set-up è stato utilizzato il kernel Gaussiano RBF\footnote{\url{https://en.wikipedia.org/wiki/Radial_basis_function_kernel}}.
 
 \subsection{MLP}
-Si tratta della naturale evoluzione del \textit{Perceptron} (algoritmo adatto a problemi linearmente separabili) che comporta l'introduzione di nuove funzioni di attivazione non lineari per i neuroni, che permettono la gestione anche di problemi non linearmente separabili. La rete neurale multilayer possiede inoltre almeno un layer aggiuntivo (oltre quello di input e quello di output del Perceptron), chiamato \textit{hidden layer} ed è in grado di fornire approssimazioni delle soluzioni di numerosi problemi\footnote{G. Cybenko, nel 1989, ha dimostrato che sono, infatti, approssimatori universali}. L'addestramento di queste reti avviene tramite il metodo della \textit{backpropagation}, che comporta la modulazione dei pesi degli archi che collegano un layer al successivo nella rete, i quali permettono di ridurre l'errore di predizione del classificatore.
+Si tratta della naturale evoluzione del \textit{Perceptron} (algoritmo adatto a problemi linearmente separabili) che comporta l'introduzione di nuove funzioni di attivazione non lineari per i neuroni, che permettono la gestione anche di problemi non linearmente separabili. La rete neurale multilayer possiede inoltre almeno un layer aggiuntivo (oltre quello di input e quello di output del Perceptron), chiamato \textit{hidden layer} ed è in grado di fornire approssimazioni delle soluzioni di numerosi problemi\footnote{G. Cybenko, nel 1989, ha dimostrato che sono, infatti, approssimatori universali}. L'addestramento di queste reti avviene tramite il metodo della \textit{backpropagation}\footnote{\url{https://en.wikipedia.org/wiki/Backpropagation}}, che comporta la modulazione dei pesi degli archi che collegano un layer al successivo nella rete, i quali permettono di ridurre l'errore di predizione del classificatore.
 \newline
 \newline
 Questo metodo è un metodo approssimato (porta ad un minimo locale della funzione di perdita), dato che in generale il problema di ottimizzazione dei pesi degli archi risulta essere un problema NP-Completo.
 
 \section{Set-up sperimentale}
+
+Dato il tempo limitato per l'esplorazione delle diverse configurazioni di ogni algoritmo, ci si è focalizzati unicamente su determinati set-up di apprendimento, utilizzando le implementazioni degli algoritmi in python fornite da \textit{Scikit-learn}\footnote{\url{http://scikit-learn.org/stable/}}.
+\newline
+\newline
+Per ogni singolo problema di classificazione è stato addestrato un singolo classificatore, cercando di gestire lo sbilanciamento delle classi.
+
+\subsection{Set-up SVM}
+Per la support vector machine, come anticipato, è stato utilizzato il kernel RBF, e per la gestione delle classi sbilanciate si è fissato il parametro $class\_weight="auto"$, il quale permette di incrementare la penalità per le istanze delle classi sbilanciate, migliorando notevolmente le prestazioni dell'algoritmo su queste ultime.
+
+\subsection{Set-up MLP}
+Per la rete neurale multilayer si è decisa una configurazione a due hidden layer da 500 nodi ciascuno.
+\newline
+\newline
+Per le funzioni di attivazione e il solver, si sono utilizzate le configurazioni di default dell'algoritmo, e cioè $Relu$ per le funzioni di attivazione e $Adam$ come solver.
+\newline
+\newline
+La Relu è la funzione:
+\[
+ f(x) = max(0, x)
+ \]
+ed è in genere utilizzata perché veloce per l'apprendimento (per la computazione del gradiente).
+\newline
+\newline
+Il solver Adam è invece un ottimizzatore stocastico per la discesa del gradiente\footnote{https://arxiv.org/abs/1412.6980}.
+\subsection{Metriche e valutazione}
 
 Per valutare le performance del metodo si è usata la tecnica sperimentale della 5-fold
 cross-validation.  Si sono poi utilizzate le seguenti metriche:
