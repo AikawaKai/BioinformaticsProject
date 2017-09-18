@@ -106,18 +106,20 @@ Si tratta di un algoritmo di apprendimento che performa bene su problemi linearm
 Data l'altissima probabilità dei diversi problemi di classificazione di essere non linearmente separabili, nel nostro set-up è stato utilizzato il kernel Gaussiano RBF\footnote{\url{https://en.wikipedia.org/wiki/Radial_basis_function_kernel}}.
 
 \subsection{MLP}
-È un algoritmo di apprendimento adatto a problemi non linearmente separabili. Si basa su una rete di oggetti più semplici, i neuroni, e apprende correggendo i pesi delle connessioni utilizzando la \emph{backpropagation}. Gli MLP sono in grado di fornire approssimazioni delle soluzioni di numerosi problemi\footnote{G. Cybenko, nel 1989, ha dimostrato che sono, infatti, approssimatori universali} e sono quindi una soluzione estremamente versatile.
+Si tratta della naturale evoluzione del \textit{Perceptron} (algoritmo adatto a problemi linearmente separabili) che comporta l'introduzione di nuove funzioni di attivazione non lineari per i neuroni, che permettono la gestione anche di problemi non linearmente separabili. La rete neurale multilayer possiede inoltre almeno un layer aggiuntivo (oltre quello di input e quello di output del Perceptron), chiamato \textit{hidden layer} ed è in grado di fornire approssimazioni delle soluzioni di numerosi problemi\footnote{G. Cybenko, nel 1989, ha dimostrato che sono, infatti, approssimatori universali}. L'addestramento di queste reti avviene tramite il metodo della \textit{backpropagation}, che comporta la modulazione dei pesi degli archi che collegano un layer al successivo nella rete, i quali permettono di ridurre l'errore di predizione del classificatore.
+\newline
+\newline
+Questo metodo è un metodo approssimato (porta ad un minimo locale della funzione di perdita), dato che in generale il problema di ottimizzazione dei pesi degli archi risulta essere un problema NP-Completo.
 
 \section{Set-up sperimentale}
 
-Per valutare le performance del metodo si è usato la tecnica sperimentale della 5-fold
+Per valutare le performance del metodo si è usata la tecnica sperimentale della 5-fold
 cross-validation.  Si sono poi utilizzate le seguenti metriche:
 
 \begin{itemize}
-\item Misure per  class":   Area  Under  the  Receiver  Operating  Characteristic
+\item Misure per  class:   Area  Under  the  Receiver  Operating  Characteristic
 curve (AUROC) and the Area Under the Precision Recall Curve (AUPRC);
-\item Misure per-example" la Precision, Recall ed F-score gerarchica.
-\item F-score gerarchica.
+\item Misure per-example: la Precision, Recall ed F-score gerarchica.
 \end{itemize}
 
 
