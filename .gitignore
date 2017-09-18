@@ -1,2 +1,7 @@
 */__pycache__/
 *.pyc
+
+#LaTeX log and output files
+relation/*.log
+relation/*.pdf
+relation/*.gz
