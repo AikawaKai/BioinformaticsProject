@@ -70,11 +70,24 @@ Corso: & Bioinformatica
 \section{Scopo del progetto}
 
 L'obiettivo del progetto è di predire la funzione delle proteine di \emph{Drosophila
-melanogaster}, per determinate ontologie, tramite gli algoritmi di apprendimento Support Vector Machine(SVM) e Multilayer Perceptron(MLP), per poi analizzarne e confrontarne i risultati.
+melanogaster}, per determinate ontologie, tramite gli algoritmi di apprendimento Support Vector Machine(SVM) e Multilayer Perceptron(MLP), per poi analizzarne e confrontarne i risultati. Dato che ogni proteina può essere classificata in più di una categoria, il problema trattato è quello della classificazione multi-etichetta.
 
 \section{Dataset}
 Il dataset utilizzato per l'apprendimento induttivo è stato generato da un grafo indiretto, i cui nodi sono le proteine e gli archi indicano il grado di similitudine tra due proteine\footnote{Come è stata costruita la matrice:\\ \url{https://homes.di.unimi.it/~valentini/SlideCorsi/Bioinformatica1617/Bioinf-Project1617.pdf}}. Tale grafo è rappresentato da una matrice pesata  di  adiacenza e ogni  riga  (colonna)  si  riferisce quindi  ad  una  diversa  proteina  dell'organismo  ed  ogni  entry  al  peso  dell'arco che connette due proteine.
 
+\subsection{Istanze degli algoritmi}
+Le istanze utilizzate per i due algoritmi induttivi sono le righe (colonne) della matrice di adiacenza. Quindi per ogni proteina si avrà un vettore le cui componenti (feature) rappresentano il grado di similitudine che questa ha in relazione alle altre proteine. 
+
+\subsection{Etichettatura}
+Per l'etichettatura delle istanze sono state fornite tre ontologie:
+\begin{itemize}
+\item BP(Biological Process) con 1951 termini.
+\item MF (Molecular Function) con 234 termini.
+\item CC (Cellular Component) con 235 termini.
+\end{itemize} 
+Rappresentate da matrici di annotazioni, dove sulle righe sono specificate le proteine e sulle colonne i termini delle ontologie.
+
+Data la notevole quantità di tempo necessaria per l'addestramento dei classificatori, ci si è soffermati unicamente sull'ontologia CC. Quindi ad ogni istanza del problema è stato associato un sottoinsieme di queste etichette.
 
 \label{definitions}
 \begin{description}
