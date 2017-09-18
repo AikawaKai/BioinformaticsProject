@@ -86,7 +86,7 @@ Per l'etichettatura delle istanze sono state fornite tre ontologie\footnote{Tutt
 \item MF (Molecular Function) con 234 termini.
 \item CC (Cellular Component) con 235 termini.
 \end{itemize} 
-Rappresentate da matrici di annotazioni, dove sulle righe sono specificate le proteine e sulle colonne i termini delle ontologie. Nell'entry $(i,j)$ della matrice è specificato un 1 se la proteina $i$ appartiene alla categoria\textbackslash termine $j$, altrimenti 0.
+Rappresentate da matrici di annotazioni, dove sulle righe sono specificate le proteine e sulle colonne i termini delle ontologie. Nell'entry $(i,j)$ della matrice è specificato un 1 se la proteina $i$ appartiene alla categoria\textbackslash termine $j$, 0 altrimenti.
 \newline
 \newline
 Data la notevole quantità di tempo necessaria per l'addestramento dei classificatori, ci si è soffermati unicamente sull'ontologia CC. Quindi ad ogni istanza del problema è stato associato un sottoinsieme di queste etichette.
@@ -99,13 +99,14 @@ I metodi di apprendimento supervisionato utilizzati sono:
 \item Support Vector Machine.
 \end{itemize}
 
-\subsection{MLP}
-
 \subsection{SVM}
 Si tratta di un algoritmo di apprendimento che performa bene su problemi linearmente separabili nello spazio euclideo delle feature. È inoltre applicabile anche a problemi non linearmente separabili, data la possibilità di introduzione dei \emph{kernel}, che proiettano lo spazio a n-dimensioni (n feature) in uno spazio ad elevata dimensionalità, tramite delle trasformazioni non lineari, dove le probabilità che il problema sia linearmente separabile aumentano notevolmente\footnote{Teorema di Cover}.
 \newline
 \newline
 Data l'altissima probabilità dei diversi problemi di classificazione di essere non linearmente separabili, nel nostro set-up è stato utilizzato il kernel Gaussiano RBF\footnote{\url{https://en.wikipedia.org/wiki/Radial_basis_function_kernel}}.
+
+\subsection{MLP}
+È un algoritmo di apprendimento adatto a problemi non linearmente separabili.
 
 \section{Set-up sperimentale}
 
