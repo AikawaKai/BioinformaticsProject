@@ -50,8 +50,6 @@ if __name__ == '__main__':
         auc2 = auc2/5
         res1.append(auc1)
         res2.append(auc2)
-        print(auc1)
-        print(auc2)
 
     # scrittura su file dei risultati di AUC per ROC e PRC
     with open("./results/SVM_AUC_results.csv", "w") as f_i:
