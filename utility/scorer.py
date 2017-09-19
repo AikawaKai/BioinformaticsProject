@@ -1,6 +1,8 @@
 from sklearn.metrics import confusion_matrix
-from sklearn.metrics import auc, roc_curve, classification_report, average_precision_score
-from sklearn.metrics import accuracy_score, precision_score, recall_score, precision_recall_curve
+from sklearn.metrics import auc, roc_curve, classification_report
+from sklearn.metrics import average_precision_score
+from sklearn.metrics import accuracy_score, precision_score
+from sklearn.metrics import recall_score, precision_recall_curve
 from collections import Counter
 import matplotlib.pyplot as plt
 
