@@ -15,23 +15,24 @@ from collections import Counter
 
 
 if __name__ == '__main__':
+    # Caricamento delle istanze e delle etichette\annotazioni
     print("[INFO] Loading dataset.")
     dataset_dir = sys.argv[1]
     annotations = sys.argv[2]
     (features, X) = loadDataSet(dataset_dir)
-    # print(features)
-    # print(X)
     print("[INFO] Dataset loaded (Features, X).")
     print("[INFO] Loading classes.")
     (classes, Y) = loadClasses(annotations)
-    print(len(classes))
-    # print(Y)
     print("[INFO] Classes loaded (Y).")
-    print(len(Y[0]), len(features))
+
+    # Preparazione della cross validation e del classificatore
     print("[INFO] MLP Training Started.")
     kf = StratifiedKFold(n_splits=5)
     clf = MLPClassifier(hidden_layer_sizes=(500, 500),
                         early_stopping=True)
+
+    # popolamento della matrice di confusione necessaria al calcolo delle
+    # metriche per example e cross validation con fold stratificate
     res1 = ["ROC"]
     res2 = ["PRC"]
     counter_confusion_matrix = [[] for i in range(len(features))]
@@ -41,7 +42,7 @@ if __name__ == '__main__':
         for train_index, test_index in kf.split(X, y):
             X_train, X_test = X[train_index], X[test_index]
             y_train, y_test = y[train_index], y[test_index]
-            cc = ClusterCentroids(random_state=0)
+            cc = ClusterCentroids(random_state=0) # undersampling
             X_train, y_train = cc.fit_sample(X_train, y_train)
             clf.fit(X_train, y_train)
             auc_roc_i, auc_pr_i, diff_ = my_scorer(clf, X_test, y_test)
@@ -51,7 +52,6 @@ if __name__ == '__main__':
             for index in test_index:
                 counter_confusion_matrix[index].append(diff_[i])
                 i+=1
-            # print(counter_confusion_matrix)
         auc1 = auc1/5
         auc2 = auc2/5
         res1.append(auc1)
@@ -59,12 +59,14 @@ if __name__ == '__main__':
         print(auc1)
         print(auc2)
 
+    # scrittura su file dei risultati di AUC per ROC e PRC
     with open("./results/MLP_AUC_results.csv", "w") as f_i:
         csv_writer = csv.writer(f_i, delimiter=",")
         csv_writer.writerow(["AUC"]+list(classes))
         csv_writer.writerow(res1)
         csv_writer.writerow(res2)
 
+    # scrittura su file dei risultati per example di precision e recall
     with open("./results/MLP_Precision_Recall_multilabel_results.csv", 'w') as f_i:
         csv_writer = csv.writer(f_i, delimiter=",")
         csv_writer.writerow(["Precision", "Recall"])

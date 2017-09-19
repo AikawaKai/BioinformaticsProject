@@ -127,7 +127,7 @@ Per ogni singolo problema di classificazione è stato addestrato un singolo clas
 Per la support vector machine, come anticipato, è stato utilizzato il kernel RBF. Si tratta di una funzione kernel che può essere interpretata come similarità tra due istanze del problema (sfrutta la distanza euclidea) ed è regolata da un paramatro $\gamma$ , che nel nostro test è stato fissato a $\frac{1}{\#features}$.
 \newline
 \newline
-Per la gestione delle classi sbilanciate si è fissato il parametro $class\_weight$ dell'implementazione python di scikit-learn ad $"auto"$, il quale permette di modulare automaticamente la penalità per le istanze delle classi sbilanciate, proporzionalmente alla loro frequenza, migliorando notevolmente le prestazioni dell'algoritmo su queste ultime.
+Per la gestione delle classi sbilanciate si è fissato il parametro $class\_weight$ dell'implementazione python di scikit-learn a $"balanced"$, il quale permette di modulare automaticamente la penalità per le istanze delle classi sbilanciate, proporzionalmente alla loro frequenza, migliorando notevolmente le prestazioni dell'algoritmo su queste ultime.
 
 \subsection{Set-up MLP}
 Per la rete neurale multilayer si è decisa una configurazione a due hidden layer da 500 nodi ciascuno.
