@@ -4,6 +4,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, preci
 from collections import Counter
 import matplotlib.pyplot as plt
 
+# metodo per plottare la curva ROC
 def plotCurve(fpr, tpr, auc, labely, labelx):
     plt.figure()
     lw = 2
@@ -18,6 +19,7 @@ def plotCurve(fpr, tpr, auc, labely, labelx):
     plt.legend(loc="lower right")
     plt.show()
 
+# metodo per controllare se il risultato TP, TN, FP, o FN
 def checkPredict(c):
     res = ''
     if c[0]==c[1]:
@@ -33,32 +35,15 @@ def checkPredict(c):
         return res
     return res+'N'
 
+# metodo custom per area roc e area prc
 def getScores(estimator, x, y):
     yPred = estimator.predict(x)
     yScores = estimator.predict_proba(x)[:,1]
     fpr, tpr, thresholds = roc_curve(y, yScores, pos_label=1)
     precision, recall, thresholds = precision_recall_curve(y, yScores, pos_label=1)
-    #print(list(zip(recall, precision, thresholds)))
-    # print(len(tpr), len(thresholds))
-    #print(list(zip(tpr, fpr, thresholds)))
-    # print(tpr)
-    # print([recall_score(y, [1 if pred>=tr else 0 for pred in yScores]) for tr in thresholds])
-    # yPred = [1 if pred>=0.53 else 0 for pred in yScores ]
     auc_ro = auc(fpr, tpr)
-    # plotCurve(fpr, tpr, auc_ro)
-    #precision, recall, thresholds = precision_recall_curve(y, yScores, pos_label=1)
-    # print(fpr, tpr)
-    #precision_recall_curve
-    #auc_pr = auc(precision, recall, reorder=True)
     auc_pr = average_precision_score(y, yScores)
-    # plotCurve(recall, precision, auc_pr, "precision", "recall")
-    # print(thresholds)
-    # print(classification_report(y, yPred))
     print(confusion_matrix(y, yPred))
-    #auc_pr = auc(recall, precision)
-    #print(auc_pr, auc(recall, precision))
-
-    #auc_ro = roc_auc_score(y, yScores)
     return (precision_score(y, yPred, average='binary'), auc_ro, auc_pr, yPred)
 
 def my_scorer(estimator, x, y):
