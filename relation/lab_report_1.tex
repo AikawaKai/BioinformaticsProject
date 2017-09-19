@@ -397,9 +397,9 @@ curve (AUROC) and the Area Under the Precision Recall Curve (AUPRC);
 
 \section{Risultati}
 \subsection{AUROC AUPRC: MLP vs SVM}
-\begin{longtable}{lll} 
+\begin{longtable}{lllll} 
 \toprule
-\bfseries Class & \bfseries AUROC & \bfseries AUPRC (\%) \\
+\bfseries Class & \bfseries AUROC\_mlp & \bfseries AUPRC\_mlp  & \bfseries AUROC\_svm & \bfseries AUPRC\_svm\\
 \midrule \endhead
 \bottomrule \endfoot
 \csvreader[
@@ -407,7 +407,7 @@ curve (AUROC) and the Area Under the Precision Recall Curve (AUPRC);
     late after last line=,
     before reading={\catcode`\#=12},
     after reading={\catcode`\#=6}]%
-    {new_csv.csv}{1=\AUC,2=\ROC,3=\PRC}{\AUC & \ROC & \PRC}
+    {new_csv.csv}{1=\AUC,2=\ROC,3=\PRC,4=\ROCC,5=\PRCC}{\AUC & \ROC & \PRC & \ROCC & \PRCC}
 \end{longtable}
 \subsection{Precision, Recall, F-Score: MLP vs SVM}
 
