@@ -65,7 +65,8 @@ if __name__ == '__main__':
         csv_writer.writerow(res2)
 
     # scrittura su file dei risultati per example di precision e recall
-    with open("./results/MLP_Precision_Recall_multilabel_results.csv", 'w') as f_i:
+    with open("./results/MLP_Precision_Recall_multilabel_results.csv",
+              'w') as f_i:
         csv_writer = csv.writer(f_i, delimiter=",")
         csv_writer.writerow(["Precision", "Recall"])
         precision = 0
