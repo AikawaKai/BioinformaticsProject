@@ -13,7 +13,6 @@ from numpy import array
 from collections import Counter
 
 
-
 if __name__ == '__main__':
     # Caricamento delle istanze e delle etichette\annotazioni
     print("[INFO] Loading dataset.")
@@ -36,7 +35,7 @@ if __name__ == '__main__':
     res1 = ["ROC"]
     res2 = ["PRC"]
     threesholds = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-    counter_confusion_matrix = [t : [[] for i in range(len(features))] for t in threesholds]
+    counter_confusion_matrix = {t : [[] for i in range(len(features))] for t in threesholds}
     for y in Y:
         auc1 = 0
         auc2 = 0
