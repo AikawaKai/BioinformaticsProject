@@ -96,11 +96,14 @@ if __name__ == '__main__':
                 try:
                     precision+=tp/(tp+fp)
                 except:
-                    #Do nothing (precision+=0)
+                    #Do nothing
+                    precision+=0
+
                 try:
                     recall+=tp/(tp+fn)
                 except:
-                    #Do nothing (recall+=0)
+                    #Do nothing
+                    recall+=0
 
             #csv_writer.writerow([precision/50, recall/50])
             if len_div1>0:
