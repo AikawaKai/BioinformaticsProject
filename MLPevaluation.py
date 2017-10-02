@@ -69,13 +69,13 @@ if __name__ == '__main__':
     with open("./results/MLP_Precision_Recall_multilabel_results_test.csv",
               'w') as f_i:
         csv_writer = csv.writer(f_i, delimiter=",")
-        csv_writer.writerow(["Precision", "Recall"])
-        precision = 0
-        recall = 0
-        len_div1 = len(counter_confusion_matrix)
-        len_div2 = len_div1
+        csv_writer.writerow(["Threshold","Precision", "Recall"])
         for threeshold in threesholds:
-            for inst in counter_confusion_matrix[t]:
+            precision = 0
+            recall = 0
+            len_div1 = len(counter_confusion_matrix[threeshold])
+            len_div2 = len_div1
+            for inst in counter_confusion_matrix[threeshold]:
                 dict_ = Counter(inst)
                 try:
                     tp = dict_["TP"]
@@ -96,14 +96,14 @@ if __name__ == '__main__':
                 try:
                     precision+=tp/(tp+fp)
                 except:
-                    len_div1 = len_div1-1
+                    #Do nothing (precision+=0)
                 try:
                     recall+=tp/(tp+fn)
                 except:
-                    len_div2 = len_div2-1
+                    #Do nothing (recall+=0)
 
-        #csv_writer.writerow([precision/50, recall/50])
-        if len_div1>0:
-            csv_writer.writerow([precision/len_div1, recall/len_div2])
-        else:
-            csv_writer.writerow([0, 0])
+            #csv_writer.writerow([precision/50, recall/50])
+            if len_div1>0:
+                csv_writer.writerow([threeshold, precision/len_div1, recall/len_div2])
+            else:
+                csv_writer.writerow([threeshold, 0, 0])
