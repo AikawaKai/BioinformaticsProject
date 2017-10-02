@@ -46,10 +46,19 @@ def getScores(estimator, x, y):
     auc_ro = auc(fpr, tpr)
     auc_pr = average_precision_score(y, yScores)
     print(confusion_matrix(y, yPred))
-    return (precision_score(y, yPred, average='binary'), auc_ro, auc_pr, yPred)
+    return (precision_score(y, yPred, average='binary'), auc_ro, auc_pr, yPred, yScores)
 
 def my_scorer(estimator, x, y):
-    p, roc_area, prec_recall_area, yPred = getScores(estimator, x, y)
+    p, roc_area, prec_recall_area, yPred, yScores = getScores(estimator, x, y)
     diffs_ = [checkPredict(c) for c in zip(y, yPred)]
     print(Counter(diffs_))
     return (roc_area, prec_recall_area, diffs_)
+
+def threesholdExplorerScorer(estimator, x, y, threesholds):
+    p, roc_area, prec_recall_area, yPred, yScores = getScores(estimator, x, y)
+    data = {}
+    for t in threesholds:
+        pred = lambda x,t : 1 if x > t else 0
+        data[t] = [checkPredict(c) for c in zip(y, map(pred, yScores))]
+
+    return (roc_area, prec_recall_area, data)
