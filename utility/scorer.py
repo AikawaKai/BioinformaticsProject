@@ -58,7 +58,7 @@ def threesholdExplorerScorer(estimator, x, y, threesholds):
     p, roc_area, prec_recall_area, yPred, yScores = getScores(estimator, x, y)
     data = {}
     for t in threesholds:
-        pred = lambda x : 1 if x > t else 0
+        pred = lambda x : 1 if x >= t else 0
         data[t] = [checkPredict(c) for c in zip(y, map(pred, yScores))]
 
     return (roc_area, prec_recall_area, data)

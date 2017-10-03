@@ -34,7 +34,7 @@ if __name__ == '__main__':
     # metriche per example e cross validation con fold stratificate
     res1 = ["ROC"]
     res2 = ["PRC"]
-    threesholds = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+    threesholds = [i/100 for i in range(0,102,2)]
     counter_confusion_matrix = {t : [[] for i in range(len(features))] for t in threesholds}
     for y in Y:
         auc1 = 0
@@ -61,52 +61,62 @@ if __name__ == '__main__':
     # scrittura su file dei risultati di AUC per ROC e PRC
     with open("./results/MLP_AUC_results_test.csv", "w") as f_i:
         csv_writer = csv.writer(f_i, delimiter=",")
-        csv_writer.writerow(["AUC"]+list(classes))
+        csv_writer.writerow(["AUC"] + list(classes))
         csv_writer.writerow(res1)
         csv_writer.writerow(res2)
 
     # scrittura su file dei risultati per example di precision e recall
     with open("./results/MLP_Precision_Recall_multilabel_results_test.csv",
               'w') as f_i:
-        csv_writer = csv.writer(f_i, delimiter=",")
-        csv_writer.writerow(["Threshold","Precision", "Recall"])
-        for threeshold in threesholds:
-            precision = 0
-            recall = 0
-            len_div1 = len(counter_confusion_matrix[threeshold])
-            len_div2 = len_div1
-            for inst in counter_confusion_matrix[threeshold]:
-                dict_ = Counter(inst)
-                try:
-                    tp = dict_["TP"]
-                except:
-                    tp = 0
-                try:
-                    tn = dict_["TN"]
-                except:
-                    tn = 0
-                try:
-                    fn = dict_["FN"]
-                except:
-                    fn = 0
-                try:
-                    fp = dict_["FP"]
-                except:
-                    fp = 0
-                try:
-                    precision+=tp/(tp+fp)
-                except:
-                    #Do nothing
-                    precision+=0
+        with open("./results/MLP_Precision_Recall_multilabel_results_test_old_method.csv",
+                  'w') as f_j:
+            csv_writer_1 = csv.writer(f_i, delimiter=",")
+            csv_writer_2 = csv.writer(f_j, delimiter=",")
 
-                try:
-                    recall+=tp/(tp+fn)
-                except:
-                    #Do nothing
-                    recall+=0
+            csv_writer_1.writerow(["Threshold", "Precision", "Recall"])
+            csv_writer_2.writerow(["Threshold", "Precision", "Recall"])
+            for threeshold in threesholds:
+                precision = 0
+                recall = 0
+                len_div1 = len(counter_confusion_matrix[threeshold])
+                len_div2 = len_div1
+                len_div3 = len_div1
+                len_div4 = len_div1
+                for inst in counter_confusion_matrix[threeshold]:
+                    dict_ = Counter(inst)
+                    try:
+                        tp = dict_["TP"]
+                    except:
+                        tp = 0
+                    try:
+                        tn = dict_["TN"]
+                    except:
+                        tn = 0
+                    try:
+                        fn = dict_["FN"]
+                    except:
+                        fn = 0
+                    try:
+                        fp = dict_["FP"]
+                    except:
+                        fp = 0
+                    try:
+                        precision+=tp/(tp+fp)
+                    except:
+                        len_div3 = len_div3 -1
 
-            #csv_writer.writerow([precision/50, recall/50])
-            if len_div1>0:
-                csv_writer.writerow([threeshold, precision/len_div1, recall/len_div2])
-            else:
-                csv_writer.writerow([threeshold, 0, 0])
+                    try:
+                        recall+=tp/(tp+fn)
+                    except:
+                        len_div4 = len_div4 -1
+
+                #csv_writer.writerow([precision/50, recall/50])
+                if len_div1>0:
+                    csv_writer_1.writerow([threeshold, precision / len_div1, recall / len_div2])
+                else:
+                    csv_writer_1.writerow([threeshold, 0, 0])
+
+                if len_div3>0:
+                    csv_writer_2.writerow([threeshold, precision / len_div2, recall / len_div3])
+                else:
+                    csv_writer_2.writerow([threeshold, 0, 0])
