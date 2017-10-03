@@ -5,3 +5,6 @@
 relation/*.log
 relation/*.pdf
 relation/*.gz
+
+#IntelliJ folder
+.idea/
