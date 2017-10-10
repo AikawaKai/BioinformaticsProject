@@ -8,6 +8,7 @@ from imblearn.under_sampling import ClusterCentroids
 from sklearn.metrics import precision_recall_curve
 from utility.scorer import *
 from utility.resultPrinter import *
+from utility.fmeasure import runFscore
 import csv
 import sys
 from numpy import array
@@ -66,3 +67,9 @@ if __name__ == '__main__':
     printPrecisionRecall("./results/MLP_Precision_Recall_multilabel_results_test.csv",
                          "./results/MLP_Precision_Recall_multilabel_results_test_old_method.csv",
                          threesholds, counter_confusion_matrix)
+
+    # calcolo e scrittura su file dell' F-measure per threshold
+    runFscore("./results/MLP_Precision_Recall_multilabel_results_test.csv",
+              "./results/MLP_F-measure_multilabel_results.csv")
+    runFscore("./results/MLP_Precision_Recall_multilabel_results_test_old_method.csv",
+              "./results/MLP_F-measure_multilabel_results_old_method.csv")

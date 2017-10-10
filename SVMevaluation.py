@@ -7,6 +7,7 @@ from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import precision_recall_curve
 from utility.scorer import *
 from utility.resultPrinter import *
+from utility.fmeasure import runFscore
 import csv
 import sys
 from numpy import array
@@ -62,3 +63,9 @@ if __name__ == '__main__':
     printPrecisionRecall("./results/SVM_Precision_Recall_multilabel_results_test.csv",
                          "./results/SVM_Precision_Recall_multilabel_results_old.csv",
                          threesholds, counter_confusion_matrix)
+
+    # calcolo e scrittura su file dell' F-measure per threshold
+    runFscore("./results/SVM_Precision_Recall_multilabel_results_test.csv",
+              "./results/SVM_F-measure_multilabel_results.csv")
+    runFscore("./results/SVM_Precision_Recall_multilabel_results_old.csv",
+              "./results/SVM_F-measure_multilabel_results_old.csv")
