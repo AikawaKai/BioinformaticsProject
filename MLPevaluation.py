@@ -7,6 +7,7 @@ from sklearn.model_selection import StratifiedKFold
 from imblearn.under_sampling import ClusterCentroids
 from sklearn.metrics import precision_recall_curve
 from utility.scorer import *
+from utility.resultPrinter import *
 import csv
 import sys
 from numpy import array
@@ -59,64 +60,9 @@ if __name__ == '__main__':
         res2.append(auc2)
 
     # scrittura su file dei risultati di AUC per ROC e PRC
-    with open("./results/MLP_AUC_results_test.csv", "w") as f_i:
-        csv_writer = csv.writer(f_i, delimiter=",")
-        csv_writer.writerow(["AUC"] + list(classes))
-        csv_writer.writerow(res1)
-        csv_writer.writerow(res2)
+    printAUCROC("./results/MLP_AUC_results_test.csv", classes, res1, res2)
 
     # scrittura su file dei risultati per example di precision e recall
-    with open("./results/MLP_Precision_Recall_multilabel_results_test.csv",
-              'w') as f_i:
-        with open("./results/MLP_Precision_Recall_multilabel_results_test_old_method.csv",
-                  'w') as f_j:
-            csv_writer_1 = csv.writer(f_i, delimiter=",")
-            csv_writer_2 = csv.writer(f_j, delimiter=",")
-
-            csv_writer_1.writerow(["Threshold", "Precision", "Recall"])
-            csv_writer_2.writerow(["Threshold", "Precision", "Recall"])
-            for threeshold in threesholds:
-                precision = 0
-                recall = 0
-                len_div1 = len(counter_confusion_matrix[threeshold])
-                len_div2 = len_div1
-                len_div3 = len_div1
-                len_div4 = len_div1
-                for inst in counter_confusion_matrix[threeshold]:
-                    dict_ = Counter(inst)
-                    try:
-                        tp = dict_["TP"]
-                    except:
-                        tp = 0
-                    try:
-                        tn = dict_["TN"]
-                    except:
-                        tn = 0
-                    try:
-                        fn = dict_["FN"]
-                    except:
-                        fn = 0
-                    try:
-                        fp = dict_["FP"]
-                    except:
-                        fp = 0
-                    try:
-                        precision+=tp/(tp+fp)
-                    except:
-                        len_div3 = len_div3 -1
-
-                    try:
-                        recall+=tp/(tp+fn)
-                    except:
-                        len_div4 = len_div4 -1
-
-                #csv_writer.writerow([precision/50, recall/50])
-                if len_div1>0:
-                    csv_writer_1.writerow([threeshold, precision / len_div1, recall / len_div2])
-                else:
-                    csv_writer_1.writerow([threeshold, 0, 0])
-
-                if len_div3>0:
-                    csv_writer_2.writerow([threeshold, precision / len_div2, recall / len_div3])
-                else:
-                    csv_writer_2.writerow([threeshold, 0, 0])
+    printPrecisionRecall("./results/MLP_Precision_Recall_multilabel_results_test.csv",
+                         "./results/MLP_Precision_Recall_multilabel_results_test_old_method.csv",
+                         threesholds, counter_confusion_matrix)

@@ -6,6 +6,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import precision_recall_curve
 from utility.scorer import *
+from utility.resultPrinter import *
 import csv
 import sys
 from numpy import array
@@ -31,7 +32,8 @@ if __name__ == '__main__':
     # metriche per example e cross validation con fold stratificate
     res1 = ["ROC"]
     res2 = ["PRC"]
-    counter_confusion_matrix = [[] for i in range(len(features))]
+    threesholds = [i/100 for i in range(0,102,2)]
+    counter_confusion_matrix = {t : [[] for i in range(len(features))] for t in threesholds}
     for y in Y:
         auc1 = 0
         auc2 = 0
@@ -39,62 +41,24 @@ if __name__ == '__main__':
             X_train, X_test = X[train_index], X[test_index]
             y_train, y_test = y[train_index], y[test_index]
             clf.fit(X_train, y_train)
-            auc_roc_i, auc_pr_i, diff_ = my_scorer(clf, X_test, y_test)
+            auc_roc_i, auc_pr_i, diff_ = threesholdExplorerScorer(clf, X_test, y_test, threesholds)
             auc1+=auc_roc_i
             auc2+=auc_pr_i
-            i=0
-            for index in test_index:
-                counter_confusion_matrix[index].append(diff_[i])
-                i+=1
+            for t in threesholds:
+                i=0
+                for index in test_index:
+                    counter_confusion_matrix[t][index].append(diff_[t][i])
+                    i+=1
         auc1 = auc1/5
         auc2 = auc2/5
         res1.append(auc1)
         res2.append(auc2)
 
     # scrittura su file dei risultati di AUC per ROC e PRC
-    with open("./results/SVM_AUC_results.csv", "w") as f_i:
-        csv_writer = csv.writer(f_i, delimiter=",")
-        csv_writer.writerow(["AUC"]+list(classes))
-        csv_writer.writerow(res1)
-        csv_writer.writerow(res2)
+    printAUCROC("./results/SVM_AUC_results.csv", classes, res1, res2)
 
     # scrittura su file dei risultati per example di precision e recall
-    with open("./results/SVM_Precision_Recall_multilabel_results.csv",
-              'w') as f_i:
-        csv_writer = csv.writer(f_i, delimiter=",")
-        csv_writer.writerow(["Precision", "Recall"])
-        precision = 0
-        recall = 0
-        len_div1 = len(counter_confusion_matrix)
-        len_div2 = len_div1
-        for inst in counter_confusion_matrix:
-            dict_ = Counter(inst)
-            try:
-                tp = dict_["TP"]
-            except:
-                tp = 0
-            try:
-                tn = dict_["TN"]
-            except:
-                tn = 0
-            try:
-                fn = dict_["FN"]
-            except:
-                fn = 0
-            try:
-                fp = dict_["FP"]
-            except:
-                fp = 0
-            try:
-                precision+=tp/(tp+fp)
-            except:
-                len_div1 = len_div1-1
-            try:
-                recall+=tp/(tp+fn)
-            except:
-                len_div2 = len_div2-1
-
-        if len_div1>0:
-            csv_writer.writerow([precision/len_div1, recall/len_div2])
-        else:
-            csv_writer.writerow([0, 0])
+    "./results/SVM_Precision_Recall_multilabel_results_test.csv"
+    printPrecisionRecall("./results/SVM_Precision_Recall_multilabel_results_test.csv",
+                         "./results/SVM_Precision_Recall_multilabel_results_old.csv",
+                         threesholds, counter_confusion_matrix)
