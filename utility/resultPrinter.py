@@ -50,7 +50,7 @@ def printPrecisionRecall(filename, filenameOld, threesholds, counter_confusion_m
             csv_writer.writerow([threeshold, 0, 0])
 
         if len_div3>0:
-            csv_writer_old.writerow([threeshold, precision / len_div2, recall / len_div3])
+            csv_writer_old.writerow([threeshold, precision / len_div3, recall / len_div4])
         else:
             csv_writer_old.writerow([threeshold, 0, 0])
 
