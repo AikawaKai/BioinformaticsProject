@@ -4,9 +4,9 @@ from collections import Counter
 def printAUCROC(filename, classes, res1, res2):
     with open(filename, "w") as f_i:
         csv_writer = csv.writer(f_i, delimiter=",")
-    csv_writer.writerow(["AUC"] + list(classes))
-    csv_writer.writerow(res1)
-    csv_writer.writerow(res2)
+        csv_writer.writerow(["AUC"] + list(classes))
+        csv_writer.writerow(res1)
+        csv_writer.writerow(res2)
 
 def __prepareCSV__(fout):
     csv_writer = csv.writer(fout, delimiter=",")
