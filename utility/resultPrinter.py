@@ -27,19 +27,13 @@ def printPrecisionRecall(filename, filenameOld, threesholds, counter_confusion_m
         len_div3 = len_div1
         len_div4 = len_div1
         for inst in counter_confusion_matrix[threeshold]:
-            dict_ = Counter(inst)
-            tp = dict_["TP"] if "TP" in dict_ else 0
-            tn = dict_["TN"] if "TN" in dict_ else 0
-            fn = dict_["FN"] if "FN" in dict_ else 0
-            fp = dict_["FP"] if "FP" in dict_ else 0
-
             try:
-                precision+=tp/(tp+fp)
+                precision+=inst["TP"]/(inst["TP"]+inst["FP"])
             except:
                 len_div3 = len_div3 -1
 
             try:
-                recall+=tp/(tp+fn)
+                recall+=inst["TP"]/(inst["TP"]+inst["FN"])
             except:
                 len_div4 = len_div4 -1
 

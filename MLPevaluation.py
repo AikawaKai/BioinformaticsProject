@@ -9,11 +9,9 @@ from sklearn.metrics import precision_recall_curve
 from utility.scorer import *
 from utility.resultPrinter import *
 from utility.fmeasure import runFscore
-import csv
 import sys
 from numpy import array
 from collections import Counter
-
 
 if __name__ == '__main__':
     # Caricamento delle istanze e delle etichette\annotazioni
@@ -37,7 +35,7 @@ if __name__ == '__main__':
     res1 = ["ROC"]
     res2 = ["PRC"]
     threesholds = [i/100 for i in range(0,102,2)]
-    counter_confusion_matrix = {t : [[] for i in range(len(features))] for t in threesholds}
+    counter_confusion_matrix = {t : [{"TP" : 0, "FP" : 0, "TN" : 0 , "FN" : 0} for i in range(len(features))] for t in threesholds}
     for y in Y:
         auc1 = 0
         auc2 = 0
@@ -53,7 +51,15 @@ if __name__ == '__main__':
             for t in threesholds:
                 i=0
                 for index in test_index:
-                    counter_confusion_matrix[t][index].append(diff_[t][i])
+                    count = Counter(diff_[t][i])
+                    tp = count["TP"] if "TP" in count else 0
+                    tn = count["TN"] if "TN" in count else 0
+                    fn = count["FN"] if "FN" in count else 0
+                    fp = count["FP"] if "FP" in count else 0
+                    counter_confusion_matrix[t][index]["TP"] += tp
+                    counter_confusion_matrix[t][index]["TN"] += tn
+                    counter_confusion_matrix[t][index]["FN"] += fn
+                    counter_confusion_matrix[t][index]["FP"] += fp
                     i+=1
         auc1 = auc1/5
         auc2 = auc2/5
