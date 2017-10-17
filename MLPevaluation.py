@@ -51,11 +51,10 @@ if __name__ == '__main__':
             for t in threesholds:
                 i=0
                 for index in test_index:
-                    count = Counter(diff_[t][i])
-                    tp = count["TP"] if "TP" in count else 0
-                    tn = count["TN"] if "TN" in count else 0
-                    fn = count["FN"] if "FN" in count else 0
-                    fp = count["FP"] if "FP" in count else 0
+                    tp = 1 if "TP" in diff_[t][i] else 0
+                    tn = 1 if "TN" in diff_[t][i] else 0
+                    fn = 1 if "FN" in diff_[t][i] else 0
+                    fp = 1 if "FP" in diff_[t][i] else 0
                     counter_confusion_matrix[t][index]["TP"] += tp
                     counter_confusion_matrix[t][index]["TN"] += tn
                     counter_confusion_matrix[t][index]["FN"] += fn

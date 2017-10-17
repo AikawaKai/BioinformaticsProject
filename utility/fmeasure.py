@@ -12,7 +12,10 @@ def toFloat(el):
     return el
 
 def fscore(el):
-    el["fscore"] = (2 * el["precision"] * el["recall"])/(el["precision"] + el["recall"])
+    try:
+        el["fscore"] = (2 * el["precision"] * el["recall"])/(el["precision"] + el["recall"])
+    except:
+        el["fscore"] = 0
     return el
 
 def runFscore(inFile, outFile):
